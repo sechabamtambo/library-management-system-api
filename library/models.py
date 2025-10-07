@@ -20,7 +20,7 @@ class User(models.Model):
     
     def __str__(self):
         return self.username
-    
+# Checkout model    
 class Checkout(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
