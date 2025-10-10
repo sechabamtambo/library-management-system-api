@@ -13,7 +13,7 @@ class Book(models.Model):
 
 #Users Model    
 class User(models.Model):
-    username = models.CharField(max_length=100)
+    username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
     date_of_membership = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)

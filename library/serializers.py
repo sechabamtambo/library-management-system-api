@@ -29,10 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
 class CheckoutSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
-        user = data['user']
-        book = data['book']
-        checkout_date = data['checkout_date']
-        return_date = data['return_date']
+        user = data.get('user')
+        book = data.get('book')
+        checkout_date = data.get('checkout_date')
+        return_date = data.get('return_date')
 
         # User must be active
         if not user.is_active:
@@ -43,6 +43,10 @@ class CheckoutSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Return date must be after checkout date.")
         if return_date <= timezone.now():
             raise serializers.ValidationError("Return date must be a future date")
+        # checkout_validation
+        if checkout_date < timezone.now().date():
+            raise serializers.ValidationError("Checkout date cannot be in the past.")
+
 
         # Check available copies
         total_copies = book.number_of_copies
