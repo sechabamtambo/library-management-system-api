@@ -13,10 +13,8 @@ class BookViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'author', 'isbn']
-
-    # show only available books if ?available=true
+    
     def get_queryset(self):
-    # Start with all books
         queryset = Book.objects.all()
     
     # Check if the URL has ?available=true
