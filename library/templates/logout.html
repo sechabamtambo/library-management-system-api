@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>Logout</h2>
+    <p>You have been logged out successfully.</p>
+    <p>
+        <a href="{% url 'login' %}" class="back-link">Login again</a>
+    </p>
+</div>
+
+<style>
+body, .form-container, h2, .back-link {
+    margin: 0;
+    padding: 0;
+    background: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e5e7eb;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 5rem auto;
+    padding: 2rem;
+    background: #1f1f1f;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+    text-align: center;
+}
+
+h2 {
+    color: #8b5cf6;
+    margin-bottom: 1.5rem;
+}
+
+.back-link {
+    color: #8b5cf6;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #7c3aed;
+    text-decoration: underline;
+}
+</style>
+{% endblock content %}

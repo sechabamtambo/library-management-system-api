@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard-container">
+    <h2>Welcome, {{ request.user.username }}!</h2>
+    
+    <h3>All Books</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Available Copies</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.number_of_copies|add:"-:"|add:book.checkout_set.filter(return_date__isnull=True).count }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No books available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>My Borrowed Books</h3>
+    <ul>
+        {% for checkout in checkouts %}
+            <li>{{ checkout.book.title }} - Due: 
+                {% if checkout.return_date %}{{ checkout.return_date }}{% else %}Not returned{% endif %}
+            </li>
+        {% empty %}
+            <li>No borrowed books.</li>
+        {% endfor %}
+    </ul>
+
+    <div class="dashboard-links">
+        <a href="{% url 'logout' %}" class="action-btn">Logout</a>
+    </div>
+</div>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e5e7eb;
+}
+
+.dashboard-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #1f1f1f;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+}
+
+h2, h3 {
+    color: #8b5cf6;
+    margin-bottom: 1rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #374151;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #2a2a2a;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #232323;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-links {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.action-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #8b5cf6;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #7c3aed;
+    transform: scale(1.03);
+}
+</style>
+{% endblock content %}
