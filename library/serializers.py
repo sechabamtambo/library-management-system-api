@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Book, User, Checkout
+from django.contrib.auth.models import User
+from .models import Book, Checkout
 from django.utils import timezone
 
 # Book Serializer
@@ -22,10 +23,9 @@ class BookSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'date_of_membership', 'is_active']
-        
-# Checkout Serializer
+        fields = ['id', 'username', 'email', 'date_joined', 'is_active']  # replaced date_of_membership with date_joined
 
+# Checkout Serializer
 class CheckoutSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
@@ -47,7 +47,6 @@ class CheckoutSerializer(serializers.ModelSerializer):
         if checkout_date < timezone.now().date():
             raise serializers.ValidationError("Checkout date cannot be in the past.")
 
-
         # Check available copies
         total_copies = book.number_of_copies
         borrowed_count = Checkout.objects.filter(
@@ -63,8 +62,3 @@ class CheckoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Checkout
         fields = ['id', 'user', 'book', 'checkout_date', 'return_date']
-
-            
-            
-            
-            

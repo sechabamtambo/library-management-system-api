@@ -8,5 +8,6 @@ router.register('users', UserViewSet)
 router.register('checkouts', CheckoutViewSet)
 
 urlpatterns = [
+    #API routes
     path('', include(router.urls)),
 ]
